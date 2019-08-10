@@ -11,7 +11,7 @@ $ScriptDir = "\\MyServer\Imprivata\Reports\Inactive" # This is the root director
 $ImpCSVDir = "$ScriptDir\Exports" # This is the directory to which Imprivata exports the CSV reports. THIS IS CONFIGURED IN IMPRIVATA.
 $LogDir = "$ScriptDir\Logs" # This is the log directory
 
-# --------- DO NOT CHANGE ANYTHING BELOW THIS LINE ------------------
+# --------- DO NOT CHANGE ANYTHING BELOW THIS LINE -----------------
 
 $DoThisOne = "" # This forces the variable to clear. DO NOT CHANGE
 $EmailRecipients = (Get-ADGroupMember $EmailGroup | Get-ADUser -Properties EmailAddress | Select-Object -Expand EmailAddress)
