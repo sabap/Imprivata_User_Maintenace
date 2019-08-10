@@ -50,6 +50,7 @@ ACTIVE DIRECTORY</br>
 POWERSHELL SCRIPT</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
 2. Edit lines 2 - 12 of the script to suit your environment.</br>
+<font size="10px">
  -$ImprivataLicences = 1772 # This is the toal number of Imprivata Licenses that you have.</br>
  -$InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.</br>
  -$AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.</br>
@@ -61,7 +62,7 @@ POWERSHELL SCRIPT</br>
  -$ScriptDir = "\\MyServer\Imprivata\Reports\Inactive" # This is the root directory in which the script resides.</br>
  -$ImpCSVDir = "$ScriptDir\Exports" # This is the directory to which Imprivata exports the CSV reports. THIS IS CONFIGURED IN IMPRIVATA.</br>
  -$LogDir = "$ScriptDir\Logs" # This is the log directory</br>
-
+</font>
 These are all the changes you need to make.</br>
 If you feel comfortable changing the HTML email portion at the bottom, do so to suit your needs.
 
