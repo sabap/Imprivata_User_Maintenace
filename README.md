@@ -88,6 +88,6 @@ Network share permissions.</br>
 Shecduled Task Run-As user is not a "Domain Admin".</br>
 The "ActiveDirectory" PowerShell module is not installed on the task server.
 
-**THINGS TO NOTE**
+**THINGS TO NOTE**</br>
 The "Logs" directory that gets created is used for multiple items, one of which is a .txt logfile.  This file gets written to with the name of the Imprivata .CSV exported file, so that the script does not run the same file twice.  This is a fail-safe to prevent an undeleted CSV from being parsed again.</br>
 The script does a good job at cleaning up after itself. The "Exports" directory should only contain the fresh CSV until it is parsed, after-which it will be deleted.</br>
