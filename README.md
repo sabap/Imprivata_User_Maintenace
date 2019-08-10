@@ -14,7 +14,7 @@ Prerequisites:
 SETUP
 
 IMPRIVATA CONSOLE - Auto-Report Creation
-Log on to your Imprivata admin console
+Log on to your Imprivata admin console</br>
 Goto Reports > Add New Report > User Details
 Specify a name for the report (Example: Inactivity Maintenance)
 Filter Users by "state" / "enabled"
