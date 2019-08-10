@@ -8,7 +8,7 @@ This script will automatically purge users from Imprivata (Active Directory Secu
 2. Network share with permissions, granting the Imprivata maintenance user R/W access. (Example:  \\MyServer\Imprivata\Reports\Inactive\Exports )
 3. Server or Workstation that can be used for running scheduled tasks and has the ActiveDirectoy PowerShell module installed.
     Go here to get the module:   https://blogs.technet.microsoft.com/ashleymcglone/2016/02/26/install-the-active-directory-powershell-module-on-windows-10/
-4. Imprivata MUST be set to syncronize users based on an Active Directory Security Group (Example: "imprivata_users"  (CN=imprivata_users,OU=Groups,DC=ourcompany,DC=local))
+4. Imprivata **MUST** be set to syncronize users based on an Active Directory Security Group (Example: "imprivata_users"  (CN=imprivata_users,OU=Groups,DC=ourcompany,DC=local))</br>
 _If your environment is set to Synchronize based on OU, this script will not work!_
    
 **SETUP**
