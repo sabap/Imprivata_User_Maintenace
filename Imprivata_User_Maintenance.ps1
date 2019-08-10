@@ -1,18 +1,19 @@
 ﻿# Written by: Matt Elsberry - 08/07/2019
-$ImprivataLicences = 1772 # This is the toal number of Imprivata Licenses that you have.
+$ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that you have.
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
 $AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.
-$ExcludedUsers = "impsrvacct,epicimprivata" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
+$ExcludedUsers = "impmaintacct,headhoncho" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
 $EmailFromAddress = "Imprivata.Maintenance@ourcompany.org" # This is the FROM address that will appear in the email.
 $EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report. # This is the AD Security group to wich the members will be sent the report.
 $EmailSubject = "Imprivata User Maintenance - REMOVED ACCOUNTS" # This is the email SUBJECT.
 $EmailSMTPServer = "ourcompany-org.mail.protection.outlook.com"  # This is the SMTP relay server for the email function.
 $ScriptDir = "\\MyServer\Imprivata\Reports\Inactive" # This is the root directory in which the script resides.
 $ImpCSVDir = "$ScriptDir\Exports" # This is the directory to which Imprivata exports the CSV reports. THIS IS CONFIGURED IN IMPRIVATA.
-$LogDir = "$ScriptDir\Logs" # This is the log directory
 
 # --------- DO NOT CHANGE ANYTHING BELOW THIS LINE -----------------
 
+New-Item -ItemType Directory -Force -Path "$ScriptDir\Logs"
+$LogDir = "$ScriptDir\Logs" # This is the log directory
 $DoThisOne = "" # This forces the variable to clear. DO NOT CHANGE
 $EmailRecipients = (Get-ADGroupMember $EmailGroup | Get-ADUser -Properties EmailAddress | Select-Object -Expand EmailAddress)
 Set-Location -Path $ImpCSVDir
