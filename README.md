@@ -3,7 +3,7 @@ Auto-remove inactive users from Imprivata (PowerShell)
 
 This script will automatically purge users from Imprivata (Active Directory Security Group) based on a set duration of inactivity (Last Log On date).  Once setup, this script will completely automate this user maintenace as well as send email reports of the deleted users, license count etc, when the script is executed.
 
-Prerequisites:
+**Prerequisites:**
 1. User account for Imprivata maintenance in Active Directory
 2. Network share with permissions, granting the Imprivata maintenance user R/W access. (Example:  \\MyServer\Imprivata\Reports\Inactive\Exports )
 3. Server or Workstation that can be used for running scheduled tasks and has the ActiveDirectoy PowerShell module installed.
@@ -11,9 +11,9 @@ Prerequisites:
 4. Imprivata MUST be set to syncronize users based on an Active Directory Security Group (Example: "imprivata_users"  (CN=imprivata_users,OU=Groups,DC=ourcompany,DC=local))
    (If your environment is set to Synchronize based on OU, this script will not work!)
    
-SETUP
+**SETUP**
 
-IMPRIVATA CONSOLE - Auto-Report Creation</br>
+**IMPRIVATA CONSOLE - Auto-Report Creation**</br>
 1. Log on to your Imprivata admin console
 2. Goto Reports > Add New Report > User Details
 3. Specify a name for the report (Example: Inactivity Maintenance)
@@ -33,7 +33,7 @@ IMPRIVATA CONSOLE - Auto-Report Creation</br>
 You should be able to manually run the report and see the .CSV file that gets placed in your network share.  If you do not, you most likely have a permissions error or a syntax error</br>
 If you see the file, you are ready for the next step.
 
-IMPRIVATA CONSOLE - Auto-Sync setup</br>
+**IMPRIVATA CONSOLE - Auto-Sync setup**</br>
 1. Goto Users > Synchronize
 2. Select a domain and click next
 3. Scroll down to the bootom where the headding "Automate the synchronization process" is located.
@@ -42,12 +42,12 @@ IMPRIVATA CONSOLE - Auto-Sync setup</br>
 6. Select "Every day" from the drop-down menu and select a time that is approximately 1 hour after the above report is scheduled to run (Example: 1:00 AM)
 7. Click Save.
  
-ACTIVE DIRECTORY</br>
+**ACTIVE DIRECTORY**</br>
 1. Create a security group that will contain users which will receive the report emails from the script.
 2. Example: SCRIPTSendMail_Imprivata  (CN=SCRIPTSendMail_Imprivata,OU=Groups,DC=ourcompany,DC=local)
 3. Add your admins (recipients) to this group.
  
-POWERSHELL SCRIPT</br>
+**POWERSHELL SCRIPT**</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
 2. Edit lines 2 - 12 of the script to suit your environment.</br>
 ```
@@ -66,7 +66,7 @@ $LogDir = "$ScriptDir\Logs" # This is the log directory
 These are all the changes you need to make.</br>
 If you feel comfortable changing the HTML email portion at the bottom, do so to suit your needs.
 
-SCHEDULED TASK CONFIGURATION</br>
+**SCHEDULED TASK CONFIGURATION**</br>
 1. Schedule a task on a Windows Server or Workstation with PowerShell.
 (NOTE: This machine needs the ActiveDirectory PowerShell module, as noted in prerequisite #3, above)
 2. Run the task as a user that has R/W permissions on the network share direcories and "Domain Admin" permissions.
@@ -78,11 +78,11 @@ SCHEDULED TASK CONFIGURATION</br>
 You are now done!</br>
 You can test the script by manually running the scheduled task.  You should receive an email (if you are in the recipient security group).
 
-TROUBLESHOOTING</br>
+**TROUBLESHOOTING**</br>
 If you are not recieving an email after manually running the scheduled task or if the task indicates a failure, you can open the script in the PowerShell ISE and run it from there.
 That will give you any error codes that may arise.
 
-COMMON ERRORS</br>
+**COMMON ERRORS**</br>
 SMTP relay server misconfiguration.</br>
 Network share permissions.</br>
 Run-As user is not a "Domain Admin".</br>
