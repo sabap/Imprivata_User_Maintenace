@@ -51,10 +51,10 @@ If you see the file, you are ready for the next step.
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
 2. Edit lines 2 - 11 of the script to suit your environment.</br>
 ```
-$ImprivataLicences = 1772 # This is the toal number of Imprivata Licenses that you have.
+$ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that you have.
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
 $AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.
-$ExcludedUsers = "impsrvacct,epicimprivata" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
+$ExcludedUsers = "impmaintacct,headhoncho" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
 $EmailFromAddress = "Imprivata.Maintenance@ourcompany.org" # This is the FROM address that will appear in the email.
 $EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report. # This is the AD Security group to wich the members will be sent the report.
 $EmailSubject = "Imprivata User Maintenance - REMOVED ACCOUNTS" # This is the email SUBJECT.
