@@ -49,7 +49,7 @@ If you see the file, you are ready for the next step.
  
 **POWERSHELL SCRIPT**</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
-2. Edit lines 2 - 12 of the script to suit your environment.</br>
+2. Edit lines 2 - 11 of the script to suit your environment.</br>
 ```
 $ImprivataLicences = 1772 # This is the toal number of Imprivata Licenses that you have.
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
@@ -61,7 +61,6 @@ $EmailSubject = "Imprivata User Maintenance - REMOVED ACCOUNTS" # This is the em
 $EmailSMTPServer = "ourcompany-org.mail.protection.outlook.com"  # This is the SMTP relay server for the email function.
 $ScriptDir = "\\MyServer\Imprivata\Reports\Inactive" # This is the root directory in which the script resides.
 $ImpCSVDir = "$ScriptDir\Exports" # This is the directory to which Imprivata exports the CSV reports. THIS IS CONFIGURED IN IMPRIVATA.
-$LogDir = "$ScriptDir\Logs" # This is the log directory
 ```
 These are all the changes you need to make.</br>
 If you feel comfortable changing the HTML email portion at the bottom, do so to suit your needs.
