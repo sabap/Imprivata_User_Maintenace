@@ -1,7 +1,7 @@
 # Imprivata_User_Maintenace
 Auto-remove inactive users from Imprivata (PowerShell)
 
-This script will automatically purge users from Imprivata (Active Directory Security Group) based on a set duration of inactivity (Last Log On date).  Once setup, this script will completely automate this user maintenace as well as send email reports of the deleted users, license count etc, when the script is executed.
+This script will automatically purge users from Imprivata (Active Directory Security Group) based on a duration _that you set_ of inactivity (Last Log On date).  Once setup, this script will completely automate this user maintenace as well as send email reports of the removed users, license count etc, when the script is executed.
 
 **Prerequisites:**
 1. User account for Imprivata maintenance in Active Directory
@@ -30,7 +30,7 @@ _If your environment is set to Synchronize based on OU, this script will not wor
   Location should be in the following format:  \Imprivata\Reports\Inactive\Exports
 9. Select the Imprivata Site that you want to run the report against.
 10. Click save.</br>
-You should be able to manually run the report and see the .CSV file that gets placed in your network share.  If you do not, you most likely have a permissions error or a syntax error</br>
+You should be able to manually run the report and see the .CSV file that gets placed in your network share.  _If you do not, you most likely have a permissions error or a syntax error_</br>
 If you see the file, you are ready for the next step.
 
 **IMPRIVATA CONSOLE - Auto-Sync setup**</br>
@@ -87,7 +87,3 @@ SMTP relay server misconfiguration.</br>
 Network share permissions.</br>
 Run-As user is not a "Domain Admin".</br>
 The "activedirectory" PowerShell module is not installed on the task server.
-
-
- 
- 
