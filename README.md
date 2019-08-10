@@ -85,5 +85,5 @@ That will give you any error codes that may arise.
 **COMMON ERRORS**</br>
 SMTP relay server misconfiguration.</br>
 Network share permissions.</br>
-Run-As user is not a "Domain Admin".</br>
-The "activedirectory" PowerShell module is not installed on the task server.
+Shecduled Task Run-As user is not a "Domain Admin".</br>
+The "ActiveDirectory" PowerShell module is not installed on the task server.
