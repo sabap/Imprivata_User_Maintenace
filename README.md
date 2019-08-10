@@ -50,7 +50,7 @@ ACTIVE DIRECTORY</br>
 POWERSHELL SCRIPT</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
 2. Edit lines 2 - 12 of the script to suit your environment.</br>
-<font size="10px">
+<font size="2">
  -$ImprivataLicences = 1772 # This is the toal number of Imprivata Licenses that you have.</br>
  -$InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.</br>
  -$AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.</br>
