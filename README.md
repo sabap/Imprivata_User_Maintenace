@@ -48,7 +48,8 @@ If you see the file, you are ready for the next step.
 3. Add your admins (recipients) to this group.
  
 **POWERSHELL SCRIPT**</br>
-1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)   
+1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)</br>
+_DO NOT place it in the "Exports" sub-directory, as that directory gets parsed by the script_
 2. Edit lines 2 - 11 of the script to suit your environment.</br>
 ```
 $ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that you have.
@@ -86,3 +87,7 @@ SMTP relay server misconfiguration.</br>
 Network share permissions.</br>
 Shecduled Task Run-As user is not a "Domain Admin".</br>
 The "ActiveDirectory" PowerShell module is not installed on the task server.
+
+**THINGS TO NOTE**
+The "Logs" directory that gets created is used for multiple items, one of which is a .txt logfile.  This file gets written to with the name of the Imprivata .CSV exported file, so that the script does not run the same file twice.  This is a fail-safe to prevent an undeleted CSV from being parsed again.</br>
+The script does a good job at cleaning up after itself. The "Exports" directory should only contain the fresh CSV until it is parsed, after-which it will be deleted.</br>
