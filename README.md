@@ -1,7 +1,7 @@
 # Imprivata_User_Maintenace
 Auto-remove inactive users from Imprivata (PowerShell)
 
-This script will automatically purge users from Imprivata (Active Directory Security Group) based on a duration _that you set_ of inactivity (Last Log On date).  Once setup, this script will completely automate this user maintenace as well as send email reports of the removed users, license count etc, when the script is executed.
+This script will automatically purge users from Imprivata (Active Directory Security Group) based on a duration _that you set_ of inactivity (Last Log On date) or number of days a user remains unenrolled.  Once setup, this script will completely automate this user maintenace as well as send email reports of the removed users, license count etc, when the script is executed.
 
 **Prerequisites:**
 1. User account for Imprivata maintenance in Active Directory
@@ -46,22 +46,25 @@ If you see the file, you are ready for the next step.
 1. Create a security group that will contain users which will receive the report emails from the script.
 2. Example: SCRIPTSendMail_Imprivata  (CN=SCRIPTSendMail_Imprivata,OU=Groups,DC=ourcompany,DC=local)
 3. Add your admins (recipients) to this group.
+4. If you have any Generic AD accounts that use Imprivata, make the AD "description" field "Generic Account" or something uniform.
  
 **POWERSHELL SCRIPT**</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)</br>
 _DO NOT place it in the "Exports" sub-directory, as that directory gets parsed by the script_
-2. Edit lines 2 - 11 of the script to suit your environment.</br>
+2. Edit lines 2 - 13 of the script to suit your environment.</br>
 ```
 $ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that you have.
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
+$UnenrolledDaysLimit = 42 # Amount of DAYS that the account remains UNENROLLED greater than this number will be removed.
 $AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.
 $ExcludedUsers = "impmaintacct,headhoncho" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
 $EmailFromAddress = "Imprivata.Maintenance@ourcompany.org" # This is the FROM address that will appear in the email.
-$EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report. # This is the AD Security group to wich the members will be sent the report.
+$EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report.
 $EmailSubject = "Imprivata User Maintenance - REMOVED ACCOUNTS" # This is the email SUBJECT.
-$EmailSMTPServer = "ourcompany-org.mail.protection.outlook.com"  # This is the SMTP relay server for the email function.
+$EmailSMTPServer = "ourcompany-org.mail.protection.outlook.com"  # This is the SMTP server for the email function.
 $ScriptDir = "\\MyServer\Imprivata\Reports\Inactive" # This is the root directory in which the script resides.
 $ImpCSVDir = "$ScriptDir\Exports" # This is the directory to which Imprivata exports the CSV reports. THIS IS CONFIGURED IN IMPRIVATA.
+$GenericAcctDesc = "Generic Account" # Line text from AD description field that indicates a Generic account
 ```
 These are all the changes you need to make.</br>
 If you feel comfortable changing the HTML email portion at the bottom, do so to suit your needs.
@@ -91,3 +94,8 @@ The "ActiveDirectory" PowerShell module is not installed on the task server.
 **THINGS TO NOTE**</br>
 The "Logs" directory that gets created is used for multiple items, one of which is a .txt logfile.  This file gets written to with the name of the Imprivata .CSV exported file, so that the script does not run the same file twice.  This is a fail-safe to prevent an undeleted CSV from being parsed again.</br>
 The script does a good job at cleaning up after itself. The "Exports" directory should only contain the fresh CSV until it is parsed, after-which it will be deleted.</br>
+**After 08/19/2019**</br>
+You will notice a new Directory after applying the update, "UnenrolledCheck"</br>
+This is for handling unenrolled users.  There will be a file that resides in this directory. Leave it alone, as it keeps track of your unenrolled users and the amount of time they have remained unenrolled.</br>
+_As of right now, the unenrolled user maintenance is based on running this script once per-day, as it increments the days of your unenrolled users.  Hindsight being 20/20, I will most likely change this to a date/time stamp, to accomodate users that run it more than once per day or less than once per day. For now, just know that the "days unenrolled" are incremented by 1, each time it is ran_.
+
