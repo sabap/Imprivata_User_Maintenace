@@ -15,10 +15,10 @@ $GenericAcctDesc = "Generic Account" # Line text from AD description field that 
 # --------- DO NOT CHANGE ANYTHING BELOW THIS LINE ------------------
 
 New-Item -ItemType Directory -Force -Path "$ScriptDir\Logs"
-New-Item -ItemType Directory -Force -Path "$ScriptDir\UnenrolledCheck" # For Unenrolled user handling and tracking
-$Unenrolled = "$ScriptDir\UnenrolledCheck" # For Unenrolled user handling and tracking
-$RunningList = "$Unenrolled\RunningList.csv" # For Unenrolled user handling and tracking
-$RunningListTEMP = "$Unenrolled\RunningListTEMP.csv" # For Unenrolled user handling and tracking
+New-Item -ItemType Directory -Force -Path "$ScriptDir\UnenrolledCheck"
+$Unenrolled = "$ScriptDir\UnenrolledCheck"
+$RunningList = "$Unenrolled\RunningList.csv"
+$RunningListTEMP = "$Unenrolled\RunningListTEMP.csv"
 $LogDir = "$ScriptDir\Logs" # This is the log directory
 $DoThisOne = "" # This forces the variable to clear. DO NOT CHANGE
 $EmailRecipients = (Get-ADGroupMember $EmailGroup | Get-ADUser -Properties EmailAddress | Select-Object -Expand EmailAddress)
@@ -27,10 +27,10 @@ dir | Export-Csv $LogDir\CSVFiles.csv
 $Exports = import-csv "$LogDir\CSVFiles.csv"
 $OutFile = "$LogDir\log.txt"
 $EmailFile = "$LogDir\Imprivata_User_Maint_Email.csv"
-$UnenrolledFile = "$Unenrolled\Unenrolled.csv" # For Unenrolled user handling and tracking
+$UnenrolledFile = "$Unenrolled\Unenrolled.csv"
 $EmailHeader = "Username, First Name, Last Name, Last Logon Date"
-$UnenrolledHeader = "user, First Name, Last Name" # For Unenrolled user handling and tracking
-$RunningListHeader = "user, First Name, Last Name, UnenrolledDays" # For Unenrolled user handling and tracking
+$UnenrolledHeader = "user, First Name, Last Name"
+$RunningListHeader = "user, First Name, Last Name, UnenrolledDays"
 $Date = Get-Date
 $ExcludedUserCount = 0
 $UserCount = 0
@@ -47,11 +47,11 @@ $RunningListPathTest2 = Test-Path  $RunningListTEMP
 if (Test-Path  $EmailFile)
     {Remove-Item -Path $EmailFile}
 	
-if (Test-Path  $UnenrolledFile)  # For Unenrolled user handling and tracking
+if (Test-Path  $UnenrolledFile)
     {Remove-Item -Path $UnenrolledFile}
 
 Add-Content -Path $EmailFile -Value $EmailHeader
-Add-Content -Path $UnenrolledFile -Value $UnenrolledHeader # For Unenrolled user handling and tracking
+Add-Content -Path $UnenrolledFile -Value $UnenrolledHeader
 $RemovedUserCount = 0
 
 foreach ($Export in $Exports) 
@@ -92,9 +92,9 @@ if ($DoThisOne -ne "")
             {
 			if ($user."User Last Logged On" -eq "N/A")
                 {                
-				$UnenrolledOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name" # For Unenrolled user handling and tracking
-                Add-Content -Path $UnenrolledFile -Value $UnenrolledOutData # - This generates the list of Unenrolled users that will be used later.
-				$UnenrolledCount = $UnenrolledCount + 1 # For Unenrolled user handling and tracking
+				$UnenrolledOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name"
+                Add-Content -Path $UnenrolledFile -Value $UnenrolledOutData
+				$UnenrolledCount = $UnenrolledCount + 1
                 }
             ELSE
                 {
@@ -131,6 +131,7 @@ $UnenrolledUsers = import-csv $UnenrolledFile # Unenrolled users that were picke
         {
 		If ($UnenrolledUser.user -eq $UnenrolledRunningList.user)
 			{
+            $UserRemoved = "no"
             IF ([int]$UnenrolledRunningList.UnenrolledDays -ge $UnenrolledDaysLimit)
 				{
 				#Write-Host Removing Unenrolled user $UnenrolledRunningList.user
@@ -138,12 +139,16 @@ $UnenrolledUsers = import-csv $UnenrolledFile # Unenrolled users that were picke
 				$RemovedUserCount = $RemovedUserCount + 1
 				$EmailOutDataUnenrolled = $UnenrolledRunningList.user + "," + $UnenrolledRunningList."First Name" + "," + $UnenrolledRunningList."Last Name" + "," + "Unenrolled for " + $UnenrolledRunningList.UnenrolledDays + " days"
 				Add-Content -Path $EmailFile -Value $EmailOutDataUnenrolled
+                $UserRemoved = "yes"
 				}
             [int]$UnenrolledDays = $UnenrolledRunningList.UnenrolledDays                    
             $UnenrolledUserFound = "yes"
             [int]$UnenrolledDays = [int]$UnenrolledDays + 1
-            $UnenrolledListOutda = $UnenrolledRunningList.user + "," + $UnenrolledRunningList."First Name" + "," + $UnenrolledRunningList."Last Name" + "," + [int]$UnenrolledDays				    
-			Add-Content -Path $RunningListTEMP -Value $UnenrolledListOutda
+            $UnenrolledListOutda = $UnenrolledRunningList.user + "," + $UnenrolledRunningList."First Name" + "," + $UnenrolledRunningList."Last Name" + "," + [int]$UnenrolledDays
+            IF ($UserRemoved = "no")
+                {		    
+			    Add-Content -Path $RunningListTEMP -Value $UnenrolledListOutda
+                }
             }
         }
         If ($UnenrolledUserFound -eq "no")
