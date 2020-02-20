@@ -51,12 +51,13 @@ If you see the file, you are ready for the next step.
 **POWERSHELL SCRIPT**</br>
 1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)</br>
 _DO NOT place it in the "Exports" sub-directory, as that directory gets parsed by the script_
-2. Edit lines 2 - 13 of the script to suit your environment.</br>
+2. Edit lines 2 - 14 of the script to suit your environment.</br>
 ```
 $ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that you have.
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
 $UnenrolledDaysLimit = 42 # Amount of DAYS that the account remains UNENROLLED greater than this number will be removed.
 $AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.
+$SSOPolicyName = "SSO Users" # Name of the Imprivata SSO Policy in which this script will enforce.  This is good if you are also using Confirm ID and have a seperate policy that you do not with to be included in this script.
 $ExcludedUsers = "impmaintacct,headhoncho" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
 $EmailFromAddress = "Imprivata.Maintenance@ourcompany.org" # This is the FROM address that will appear in the email.
 $EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report.
@@ -98,4 +99,6 @@ The script does a good job at cleaning up after itself. The "Exports" directory 
 You will notice a new Directory after applying the update, "UnenrolledCheck"</br>
 This is for handling unenrolled users.  There will be a file that resides in this directory. Leave it alone, as it keeps track of your unenrolled users and the amount of time they have remained unenrolled.</br>
 _As of right now, the unenrolled user maintenance is based on running this script once per-day, as it increments the days of your unenrolled users.  Hindsight being 20/20, I will most likely change this to a date/time stamp, to accomodate users that run it more than once per day or less than once per day. For now, just know that the "days unenrolled" are incremented by 1, each time it is ran_.
-
+**After 02/20/2020**</br>
+You will notice a new variable "$SSOPolicyName"</br>
+This is for limiting the script to enforcing the maintenance on a single User Policy.  This comes in handy if you have implemented and have created a separate policy for Confirm ID.  This will skip your Confirm ID policy, so that you are not removing users that have enrolled for ConfirmID.
