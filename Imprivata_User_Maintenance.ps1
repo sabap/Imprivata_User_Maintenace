@@ -3,6 +3,7 @@ $ImprivataLicences = 1000 # This is the toal number of Imprivata Licenses that y
 $InactivityTime = 42 # Amount of DAYS since last logon. Any account LAST LOGON DATE greater than this number will be removed.
 $UnenrolledDaysLimit = 42 # Amount of DAYS that the account remains UNENROLLED greater than this number will be removed.
 $AdSecurityGroup = "imprivata_users" # ActiveDirectory Security group in which the Imprivata users are assigned.
+$SSOPolicyName = "YOUR IMP SSO POLICY NAME" # Name of the Imprivata SSO Policy in which this script will enforce.  This is good if you are also using Confirm ID and have a seperate policy that you do not with to be included in this script.
 $ExcludedUsers = "impmaintacct,headhoncho" # This is a list of users that you want to Exclude from being removed. These are generally managers or service accounts.
 $EmailFromAddress = "Imprivata.Maintenance@ourcompany.org" # This is the FROM address that will appear in the email.
 $EmailGroup = "SCRIPTSendMail_Imprivata" # This is the AD Security group to wich the members will be sent the report.
@@ -82,35 +83,38 @@ if ($DoThisOne -ne "")
     Write-Host "Let's start removing these users from Imprivata..."
     $users = import-csv $ImpCSVDir\$DoThisOne
         Foreach ($user in $users)
-        {
-		$UserCount = $UserCount + 1
-        if ($ExcludedUsers.Split(",") -eq $user.user)
-            {
-			$ExcludedUserCount = $ExcludedUserCount + 1
-            }
-        ELSE
-            {
-			if ($user."User Last Logged On" -eq "N/A")
-                {                
-				$UnenrolledOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name"
-                Add-Content -Path $UnenrolledFile -Value $UnenrolledOutData
-				$UnenrolledCount = $UnenrolledCount + 1
-                }
-            ELSE
+                   {
+            if ($user."Policy Name" -eq $SSOPolicyName)
                 {
-                $a,$b,$c,$d,$e,$f = $user."User Last Logged On".split(" ")
-                $LastLogonDate = $a + " " + $b + " " + $c
-                If ((get-date).AddDays(-$InactivityTime) -gt $LastLogonDate)
-                    {  
-				    #Write-Host Removing $user.User
-                    Remove-adgroupmember -identity $AdSecurityGroup -members $user.user -Confirm:$false
-					$RemovedUserCount = $RemovedUserCount + 1
-					$EmailOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name" + "," + $LastLogonDate
-					Add-Content -Path $EmailFile -Value $EmailOutData					
+		        $UserCount = $UserCount + 1
+                if ($ExcludedUsers.Split(",") -eq $user.user)
+                    {
+			        $ExcludedUserCount = $ExcludedUserCount + 1
+                    }
+                ELSE
+                    {
+			        if ($user."User Last Logged On" -eq "N/A")
+                        {                
+				        $UnenrolledOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name"
+                        Add-Content -Path $UnenrolledFile -Value $UnenrolledOutData
+				        $UnenrolledCount = $UnenrolledCount + 1
+                        }
+                    ELSE
+                        {
+                        $a,$b,$c,$d,$e,$f = $user."User Last Logged On".split(" ")
+                        $LastLogonDate = $a + " " + $b + " " + $c
+                        If ((get-date).AddDays(-$InactivityTime) -gt $LastLogonDate)
+                            {  
+				            #Write-Host Removing $user.User
+                            Remove-adgroupmember -identity $AdSecurityGroup -members $user.user -Confirm:$false
+					        $RemovedUserCount = $RemovedUserCount + 1
+					        $EmailOutData = $user.user + "," + $user."First Name" + "," + $user."Last Name" + "," + $LastLogonDate
+					        Add-Content -Path $EmailFile -Value $EmailOutData					
+                            }
+                         }
+                       }
                     }
                 }
-            }
-        }
 	Remove-Item $ImpCSVDir\$DoThisOne
     }
 # ---- Start Dealing with Unenrolled users --
