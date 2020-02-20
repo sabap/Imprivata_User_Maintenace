@@ -49,7 +49,7 @@ If you see the file, you are ready for the next step.
 4. If you have any Generic AD accounts that use Imprivata, make the AD "description" field "Generic Account" or something uniform.
  
 **POWERSHELL SCRIPT**</br>
-1. Copy the PowerShell script to your share (Example: \\MyServer\Imprivata\Reports\Inactive)</br>
+1. Copy the PowerShell script to your share (Example: \\\MyServer\Imprivata\Reports\Inactive)</br>
 _DO NOT place it in the "Exports" sub-directory, as that directory gets parsed by the script_
 2. Edit lines 2 - 14 of the script to suit your environment.</br>
 ```
@@ -77,7 +77,7 @@ If you feel comfortable changing the HTML email portion at the bottom, do so to 
 3. Based on the previously configured Imprivata report, The CSV file was being created at 12:00 AM
 4. Create a Scheduled task that runs daily (or weekly, depening of your Imprivata report). Schedule it for 12:30AM
 5. The action should be:  C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
-6. The command line argument should be:  -File \\MyServer\Imprivata\Reports\Inactive\Imprivata_User_Maintenance.ps1
+6. The command line argument should be:  -File \\\MyServer\Imprivata\Reports\Inactive\Imprivata_User_Maintenance.ps1
 
 You are now done!</br>
 You can test the script by manually running the scheduled task.  You should receive an email (if you are in the recipient security group).
@@ -98,7 +98,7 @@ The script does a good job at cleaning up after itself. The "Exports" directory 
 **After 08/19/2019**</br>
 You will notice a new Directory after applying the update, "UnenrolledCheck"</br>
 This is for handling unenrolled users.  There will be a file that resides in this directory. Leave it alone, as it keeps track of your unenrolled users and the amount of time they have remained unenrolled.</br>
-_As of right now, the unenrolled user maintenance is based on running this script once per-day, as it increments the days of your unenrolled users.  Hindsight being 20/20, I will most likely change this to a date/time stamp, to accomodate users that run it more than once per day or less than once per day. For now, just know that the "days unenrolled" are incremented by 1, each time it is ran_.
+_As of right now, the unenrolled user maintenance is based on running this script once per-day, as it increments the days of your unenrolled users.  Hindsight being 20/20, I will most likely change this to a date/time stamp, to accomodate users that run it more than once per day or less than once per day. For now, just know that the "days unenrolled" are incremented by 1, each time it is ran_.</br>
 **After 02/20/2020**</br>
 You will notice a new variable "$SSOPolicyName"</br>
 This is for limiting the script to enforcing the maintenance on a single User Policy.  This comes in handy if you have implemented and have created a separate policy for Confirm ID.  This will skip your Confirm ID policy, so that you are not removing users that have enrolled for ConfirmID.
